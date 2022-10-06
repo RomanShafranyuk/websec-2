@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Прибывалочка</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
+</head>
+
+<body>
+    <h1>Найдены следующие остановки:</h1>
+   
+    <ul>
+       {% for stop in stops %}
+       <li><a href="prediction.html">{{ stop }}</a></li>
+       {% endfor %}
+    </ul>
+    
+</body>
+</html>
