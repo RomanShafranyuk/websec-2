@@ -1,18 +1,136 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Прибывалочка</title>
-        <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
-        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
-    </head>
-    <body >
-        <form id = "Search" method="get"> </form>
-            <div class="mainWindow">
-                <h1 class="maintext">Каталог остановок</h1>
-                <h4>Найдите интересующую остановку по названию</h4>
-                <input id="TextInput"name="busStop" type="text" placeholder="Введите название остановки" form="Search">
-                <input type="submit" value="Поиск" form = "Search">
-            </div>
+
+<head>
+    <title>Прибывалочка</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon.png') }}">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.maptiler.com/maplibre-gl-js/v2.4.0/maplibre-gl.js"></script>
+    <link href="https://cdn.maptiler.com/maplibre-gl-js/v2.4.0/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="Search" method="get"> </form>
+    <div class="mainWindow">
+        <h1 class="maintext">Каталог остановок</h1>
+        <h4>Найдите интересующую остановку по названию</h4>
+        <input id="TextInput" name="busStop" type="text" placeholder="Введите название остановки" form="Search">
+        <input type="submit" value="Поиск" form="Search">
+    </div>
+    <div id="map" style="height: 500px; width:500px; margin: 150px,0px, 0px, 100px;" ></div>
+    <style>
+        #marker {
+        background-color: green;
+        background-size: cover;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        }
+         
+        .mapboxgl-popup {
+        max-width: 200px;
+        }
+        </style>
+    <script>
+        class Tag_map {
+            constructor(stop_id, label, longitude, latitude) {
+                this.stop_id = stop_id
+                this.label = label
+                this.longitude = longitude
+                this.latitude = latitude
+            }
+        }
+
+        async function loadStops() {
+            let url = "https://tosamara.ru/api/v2/classifiers/stopsFullDB.xml";
+            try {
+                let res = await fetch(url).then(response => response.text()).then(str => {
+                    let parser = new window.DOMParser();
+                    return parser.parseFromString(str, "text/xml")
+                });
+                return res;
+            }
+            catch (err) { console.log('err:', err); }
+        }
+
+        async function getInformationForMarks() {
+            const data = await loadStops();
+            console.log(data);
+            let size = data.getElementsByTagName("stop").length;
+            //console.log(size)
+            let stop_data = data.getElementsByTagName("stop");
+            //console.log(stop_data)
+            let lst = new Array();
+
+            for (let i = 0; i < size; i++) {
+                lst.push(new Tag_map(stop_data[i].childNodes[0].textContent,
+                    stop_data[i].childNodes[1].textContent + '\r\n'
+                    + stop_data[i].childNodes[2].textContent + '\n'
+                    + stop_data[i].childNodes[3].textContent,
+                    stop_data[i].childNodes[24].textContent,
+                    stop_data[i].childNodes[23].textContent));
+            }
+
+            console.log(lst)
+            if (lst.size === 0) {
+                lst = "No Matches";
+            }
+
+            return await Promise.resolve(lst);
+        }
+
+        const key = '9EQyfpsOwIW5xnBcmyXI';
+        const map = new maplibregl.Map({
+            container: 'map', // container id
+            style: `https://api.maptiler.com/maps/streets/style.json?key=${key}`, // style URL
+            center: [50.22125, 53.2415], // starting position [lng, lat]
+            zoom: 9, // starting zoom
+
+        });
+        getInformationForMarks().then((stops) => {
+        for (let i = 0; i < stops.length; i++)
+        {
+            var popup = new maplibregl.Popup({ offset: 25 }).setHTML(
+            "<a href=\"https://google.com\">" + stops[i].label + "</a>"
+        );
+        var el = document.createElement('div');
+        el.id = 'marker';
+
+        // create the marker
+        new maplibregl.Marker(el)
+            .setLngLat([stops[i].longitude, stops[i].latitude])
+            .setPopup(popup) // sets a popup on this marker
+            .addTo(map);
+        }});
         
-    </body>
+        //map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+        
+
+        // create DOM element for the marker
+        
+
+    </script>
+
+
+</body>
+
 </html>

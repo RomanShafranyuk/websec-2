@@ -3,6 +3,9 @@ import xml.etree.ElementTree as ET
 import requests
 correct_values = [0,1,2,3, 11,12,13,14,15,16,17,18,19]
 app = Flask(__name__)
+@app.route("/prediction")
+def prediction():
+    return render_template("prediction.html")
 @app.route("/")
 def main():
     stops_info = []
