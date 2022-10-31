@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<arrival>
+  <transport>
+    <KR_ID>15</KR_ID>
+    <nextStopName>Губернский рынок</nextStopName>
+    <quality>realtime</quality>
+    <forInvalid>false</forInvalid>
+    <scheduleTimeTo>0.0</scheduleTimeTo>
+    <scheduleDepartureTime/>
+    <number>22</number>
+    <requestedStopId>41</requestedStopId>
+    <modelTitle>МАЗ 206086</modelTitle>
+    <hullNo>177753</hullNo>
+    <delayTime>0.0</delayTime>
+    <nextStopId>879</nextStopId>
+    <time>7</time>
+    <timeInSeconds>440.22</timeInSeconds>
+    <stateNumber>А050КУ 763</stateNumber>
+    <type>Автобус</type>
+    <spanLength>751.6</spanLength>
+    <remainingLength>28.9</remainingLength>
+  </transport>
+</arrival>
