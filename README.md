@@ -1,6 +1,6 @@
 # Авторская прибывалка
 
-## Перед началом запуска убедитесь, что у вас установлены: bootstrap5, Flask, requests, xml.etree.ElementTree, hashlib.
+## Перед началом запуска убедитесь, что у вас установлены: bootstrap5, Flask, requests, xml.etree.ElementTree, hashlib. Для доступа в приложение включить server.py, в браузере прописать localhost:5000
 
 Главная страница
 
