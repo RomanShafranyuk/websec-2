@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import xml.etree.ElementTree as ET
 import requests
-import json
 import hashlib
 app = Flask(__name__)
 @app.route("/route")
@@ -86,6 +85,10 @@ def prediction():
                   "stop": i[1].text}
         predictions.append(result)
     print(predictions)
+    a = requests.get(
+            "https://tosamara.ru/api/v2/classifiers/stopsFullDB.xml")
+    with open("data.xml", "wb") as f:
+        f.write(a.content)
     stops = ET.parse("data.xml")
     stops_root = stops.getroot()
     stop = ""
