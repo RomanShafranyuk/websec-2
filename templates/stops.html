@@ -15,10 +15,16 @@
 
 <body style="background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);">
     <div class="container">
-        <div class="px-4 pt-5 my-5 text-center border-bottom">
-            <h1 class="display-4 fw-bold" style="color:white">Найдены следующие остановки:</h1>
+        <nav class="navbar navbar-light bg-light"
+        style="background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">
+            <img src="/static/icon.png" alt="" width="50" height="50" class="d-inline-block align-text-top"> </a>
+          <h3 style="color:white;"><b>Найдены следующие остановки </h3>
+  
         </div>
-        <ul class="list-group w-auto">
+      </nav>
+        <ul class="list-group">
             {% for stop in stops %}
             <a href="/prediction?stopId={{stop['stop_id']}}" class="list-group-item list-group-item-action">{{
                 stop['title'] }} <br>{{ stop['location'] }}<br>{{stop['side']}}</a>

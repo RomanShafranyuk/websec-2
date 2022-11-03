@@ -71,13 +71,8 @@ def prediction():
             "authKey": hash_object
             }
     prediction = requests.post("http://tosamara.ru/api/v2/xml", data=data)
-    print("Получено:")
-    print(type(prediction.content.decode()))
-    with open("prediction.xml", "wb") as f:
-        f.write(prediction.content)
-    tree = ET.parse('prediction.xml')
-    root = tree.getroot()
-    print(root)
+    content = prediction.content.decode()
+    root = ET.fromstring(content)
     predictions = []
     for i in root:
         result = {"id_transport": i[9].text, "time": i[12].text,
